@@ -1,22 +1,27 @@
 <script lang="ts" setup>
-const { loggedIn, user, clear } = useUserSession()
-const signOut = () => clear()
+import { useAuth } from "~/shared/composables/use-auth"
+
+const { signedIn, currentUser, signOut } = useAuth()
 </script>
 
 <template>
   <div>
     <div>
-      <p>loggedIn: {{ loggedIn }}</p>
-      <button
-        v-if="loggedIn"
-        @click="signOut"
-      >
-        sign out
-      </button>
-      <div v-if="user">
-        {{ user }}
+      <FlexRow>
+        <ButtonTertiary
+          v-if="signedIn"
+          @click="signOut"
+        >
+          sign out
+        </ButtonTertiary>
+        <p>signedIn: {{ signedIn }}</p>
+      </FlexRow>
+
+      <div v-if="currentUser">
+        hello, {{ currentUser.name }}
       </div>
     </div>
+
     <slot />
   </div>
 </template>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ProductFormSchema } from "~/feature/product/model/product"
+import { ProductFormSchema } from "~/features/product/model/product"
 import { useForm } from "~/shared/composables/use-form"
 
 const { defineField, errors } = useForm(ProductFormSchema)

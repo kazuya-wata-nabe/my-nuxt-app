@@ -1,7 +1,7 @@
 <template>
-  <div class="card-container">
+  <article class="card-container">
     <slot />
-  </div>
+  </article>
 </template>
 
 <style lang="css" scoped>
@@ -9,5 +9,7 @@
   width: 240px;
   height: 240px;
   border: 1px solid;
+  padding: 0 8px;
+  position: "relative"
 }
 </style>

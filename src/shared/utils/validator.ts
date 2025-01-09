@@ -1,26 +1,19 @@
 import * as vb from "valibot"
 
-type ToSchema<T extends Record<string, unknown>> = {
+export type {
+  ObjectEntries as Entries,
+  ObjectSchema as FormSchema,
+  InferOutput as TypedSchema,
+} from "valibot"
+
+type ToSchema<T> = T extends Record<string, unknown> ? {
   [K in keyof T]: vb.BaseSchema<T[K], T[K], vb.BaseIssue<unknown>>;
-}
+} : never
 
-export type ObjSchema = vb.ObjectEntries
-// export type FormSchema<T extends object, U extends ToSchema<T>> = vb.ObjectSchema<ToSchema<T>, undefined>
-export type FormSchema<T extends Record<string, unknown>> = vb.ObjectSchema<ToSchema<T>, undefined>
-
-const newSchema = <T extends vb.ObjectEntries>(entries: T) => {
-  return vb.object({
-    ...entries,
-  })
-}
-// const newSchema = <T extends object>(entries: ToSchema<T>) => {
-//   return vb.object({
-//     ...entries,
-//   })
-// }
+type TItems<T> = vb.PipeItem<T, T, vb.BaseIssue<unknown>>[]
 
 const string = {
-  required: () => vb.pipe(vb.string(), vb.minLength(1), vb.maxLength(5)),
+  required: (...items: TItems<string>) => vb.pipe<vb.StringSchema<undefined>, TItems<string>>(vb.string(), ...items),
   optional: () => vb.string(),
 }
 
@@ -32,5 +25,7 @@ const number = {
 export const v = {
   string,
   number,
-  newSchema,
+  newSchema: <T>(entries: ToSchema<T>) => vb.object({ ...entries }),
+  min: <N extends number>(n: N): vb.MinLengthAction<string, N, string> => vb.minLength(n, `${n}文字はだめです`),
+  max: <N extends number>(n: N): vb.MaxLengthAction<string, N, string> => vb.maxLength(n, `${n}文字は多すぎます`),
 }

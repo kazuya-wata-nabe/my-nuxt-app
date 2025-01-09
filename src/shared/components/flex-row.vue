@@ -1,19 +1,15 @@
-<script lang="ts" setup>
-const { x = 1 } = defineProps<{
-  x?: number
-}>()
+<script setup lang="ts">
+import BaseFlex from "./box/base-flex.vue"
+import type { FlexProps } from "./box/props"
+
+defineProps<Omit<FlexProps, "col">>()
 </script>
 
 <template>
-  <div class="flex-row">
+  <BaseFlex
+    v-bind="$props"
+    row
+  >
     <slot />
-  </div>
+  </BaseFlex>
 </template>
-
-<style lang="css" scoped>
-.flex-row {
-  display: flex;
-  flex-direction: row;
-  gap: v-bind('`${8 * x}px`');
-}
-</style>
