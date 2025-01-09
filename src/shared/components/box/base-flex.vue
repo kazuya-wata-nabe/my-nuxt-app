@@ -20,12 +20,12 @@ const gap = computed(() => `${8 * x}px`)
   display: flex;
   gap: v-bind(gap);
 
-  & .row {
+  &.row {
     flex-direction: row;
   }
 
-  & .col {
-    flex-direction: row;
+  &.col {
+    flex-direction: column;
   }
 }
 </style>

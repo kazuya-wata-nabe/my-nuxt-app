@@ -6,10 +6,12 @@ const dummy: ProductWithId[] = [
   {
     name: "あ",
     price: 10_000,
+    description: "",
   },
   {
     name: "い",
     price: 8_000,
+    description: "亜種帆dsファおisjfncq２９３yp",
   },
 ].map(el => ({ ...el, id: uuidV4() }))
 
@@ -26,4 +28,8 @@ export const fetchProduct: ProductRepository["read"] = (id) => {
   }
 
   return Promise.resolve(product)
+}
+
+export const fetchProductStock = () => {
+
 }
