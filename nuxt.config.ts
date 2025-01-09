@@ -10,7 +10,10 @@ export default defineNuxtConfig({
   ],
   components: {
     dirs: [
-      "shared/components",
+      {
+        path: "shared/components",
+        ignore: ["**/base.vue"],
+      },
     ],
   },
   devtools: { enabled: true },
