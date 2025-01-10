@@ -6,49 +6,50 @@ export type {
   InferOutput as TypedSchema,
 } from "valibot"
 
-type ToSchema<T> = T extends Record<string, unknown> ? {
-  [K in keyof T]: vb.BaseSchema<T[K], T[K], vb.BaseIssue<unknown>>;
-} : never
+// type ToSchema<T> = T extends Record<string, unknown> ? {
+//   [K in keyof T]: vb.BaseSchema<Required<T[K]>, Required<T[K]>, vb.BaseIssue<unknown>>
+// } : never
 
-type TItems<T> = vb.PipeItem<T, T, vb.BaseIssue<unknown>>[]
+type Kind = "required" | "optional"
 
 type StringSetting = {
-  min?: number
-  max?: number
-  optional?: true
+  min: number
+  max: number
 }
 
-const string = ({ min, max, optional }: StringSetting, ...items: TItems<string>) => {
-  const rules: TItems<string> = []
-  if (!optional) {
-    rules.push(vb.nonEmpty("必須項目です"))
-  }
+type ValidationRule = vb.PipeItem<string, string, vb.BaseIssue<unknown>>
+// PipeItem<InferOutput<TSchema>, InferOutput<TSchema>, BaseIssue<unknown>>
 
-  if (min) {
-    rules.push(vb.minLength(min, `${min}文字はだめです`))
-  }
-
-  if (max) {
-    rules.push(vb.maxLength(max, `${max}文字は多すぎます`))
-  }
-
-  return vb.pipe<vb.StringSchema<string>, TItems<string>>(
-    vb.string(""),
-    ...rules,
+const string = <T extends Kind>(kind: T) => <U extends ValidationRule>({ min, max }: StringSetting, ...items: U[]) => {
+  const register = (priory: ValidationRule[]) => Array.from<ValidationRule>([
+    ...priory,
+    vb.minLength(min, "短すぎます"),
+    vb.maxLength(max, "長すぎます"),
     ...items,
-  )
+  ])
+  switch (kind) {
+    case "required":
+      return vb.pipe(vb.string(), ...register([vb.nonEmpty("必須項目です")]))
+    case "optional":
+      return vb.optional(vb.pipe(vb.string(), ...register([])))
+    default:
+      return kind satisfies never
+  }
 }
 
-const email = () => vb.pipe<vb.StringSchema<undefined>, TItems<string>>(vb.string(), vb.email())
+const email = () => vb.pipe(vb.string(), vb.email())
 
 const number = {
   required: () => vb.number(),
   optional: () => vb.number(),
 }
 
+export const required = { required: true } as const
+export const optional = { optional: true } as const
+
 export const v = {
   string,
-  number,
   email,
-  newSchema: <T>(entries: ToSchema<T>) => vb.object({ ...entries }),
+  number,
+  newSchema: <T extends vb.ObjectEntries>(entries: T) => vb.object({ ...entries }),
 }

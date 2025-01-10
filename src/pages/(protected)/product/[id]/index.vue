@@ -8,8 +8,12 @@ const options = [
   { value: "yellow", label: "きいろ" },
 ]
 
-const { defineField, errors } = useForm(ProductFormSchema)
+const { defineField, handleSubmit, errors } = useForm(ProductFormSchema)
 const [name] = defineField("name")
+
+const onClick = handleSubmit(() => console.debug("ok"), console.debug)
+
+// name.value
 </script>
 
 <template>
@@ -18,7 +22,10 @@ const [name] = defineField("name")
     <TextInput
       v-model="name"
     >
-      {{ errors }}
+      {{ errors.name }}
     </TextInput>
+    <ButtonPrimary @click="onClick">
+      click
+    </ButtonPrimary>
   </FlexCol>
 </template>
