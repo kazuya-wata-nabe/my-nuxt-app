@@ -3,7 +3,6 @@ import { updateCart } from "~/features/cart/api"
 import { fetchProduct } from "~/features/product/api"
 import { ProductFormSchema, type Product } from "~/features/product/model/product"
 import ProductDetail from "~/features/product/ui/product-detail.vue"
-import { useAPI } from "~/shared/composables/use-api"
 import { useForm } from "~/shared/composables/use-form"
 
 definePageMeta({
@@ -26,7 +25,7 @@ const [name] = defineField("name")
 const onClick = handleSubmit(() => console.debug("ok"), console.debug)
 
 // name.value
-const { data: product } = useAPI(() => fetchProduct(props.id))
+const { data: product } = useAsyncData(() => fetchProduct(props.id))
 const onClickAddCart = (product: Product) => {
   updateCart(product).then(
     async () => navigateTo("/cart"),
