@@ -1,9 +1,8 @@
 <script lang="ts" setup>
 import { fetchProductList } from "~/features/product/api"
 import ProductCard from "~/features/product/ui/product-card.vue"
-import { useAPI } from "~/shared/composables/use-api"
 
-const { data: products } = useAPI(() => fetchProductList())
+const { data: products } = useAsyncData(() => fetchProductList())
 </script>
 
 <template>

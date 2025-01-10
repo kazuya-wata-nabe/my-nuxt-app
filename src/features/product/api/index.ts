@@ -1,6 +1,5 @@
 import type { ProductWithId } from "../model/product"
 import type { ProductRepository } from "../model/repository"
-import { uuidV4 } from "~/shared/utils/uuid"
 
 const dummy: ProductWithId[] = [
   {
@@ -13,7 +12,7 @@ const dummy: ProductWithId[] = [
     price: 8_000,
     description: "亜種帆dsファおisjfncq２９３yp",
   },
-].map(el => ({ ...el, id: uuidV4() }))
+].map((el, i) => ({ ...el, id: i.toString() }))
 
 export const fetchProductList: ProductRepository["list"] = () => {
   return Promise.resolve([
