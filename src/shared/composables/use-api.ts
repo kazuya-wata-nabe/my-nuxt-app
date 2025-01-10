@@ -4,7 +4,7 @@ export const useAPI = <T>(
   handler: (ctx?: NuxtApp) => Promise<T>,
   options?: AsyncDataOptions<T>,
 ) => {
-  return useAsyncData("", () => handler(), {
+  return useAsyncData(() => handler(), {
     ...options,
     // $fetch: useNuxtApp().$api
   })
