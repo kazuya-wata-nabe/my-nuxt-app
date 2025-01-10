@@ -10,6 +10,12 @@ declare module "#auth-utils" {
 export const useAuth = () => {
   const { loggedIn: signedIn, user: currentUser, clear } = useUserSession()
 
+  const signUp = async () => {
+    clear().then(async () => {
+      return navigateTo("/signup")
+    })
+  }
+
   const signOut = async () => {
     clear().then(async () => {
       return navigateTo("/signin")
@@ -19,6 +25,7 @@ export const useAuth = () => {
   return {
     signedIn,
     currentUser,
+    signUp,
     signOut,
   }
 }

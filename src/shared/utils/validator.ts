@@ -6,26 +6,50 @@ export type {
   InferOutput as TypedSchema,
 } from "valibot"
 
-type ToSchema<T> = T extends Record<string, unknown> ? {
-  [K in keyof T]: vb.BaseSchema<T[K], T[K], vb.BaseIssue<unknown>>;
-} : never
+// type ToSchema<T> = T extends Record<string, unknown> ? {
+//   [K in keyof T]: vb.BaseSchema<Required<T[K]>, Required<T[K]>, vb.BaseIssue<unknown>>
+// } : never
 
-type TItems<T> = vb.PipeItem<T, T, vb.BaseIssue<unknown>>[]
+type Kind = "required" | "optional"
 
-const string = {
-  required: (...items: TItems<string>) => vb.pipe<vb.StringSchema<undefined>, TItems<string>>(vb.string(), ...items),
-  optional: () => vb.string(),
+type StringSetting = {
+  min: number
+  max: number
 }
+
+type ValidationRule = vb.PipeItem<string, string, vb.BaseIssue<unknown>>
+// PipeItem<InferOutput<TSchema>, InferOutput<TSchema>, BaseIssue<unknown>>
+
+const string = <T extends Kind>(kind: T) => <U extends ValidationRule>({ min, max }: StringSetting, ...items: U[]) => {
+  const register = (priory: ValidationRule[]) => Array.from<ValidationRule>([
+    ...priory,
+    vb.minLength(min, "短すぎます"),
+    vb.maxLength(max, "長すぎます"),
+    ...items,
+  ])
+  switch (kind) {
+    case "required":
+      return vb.pipe(vb.string(), ...register([vb.nonEmpty("必須項目です")]))
+    case "optional":
+      return vb.optional(vb.pipe(vb.string(), ...register([])))
+    default:
+      return kind satisfies never
+  }
+}
+
+const email = () => vb.pipe(vb.string(), vb.email())
 
 const number = {
   required: () => vb.number(),
   optional: () => vb.number(),
 }
 
+export const required = { required: true } as const
+export const optional = { optional: true } as const
+
 export const v = {
   string,
+  email,
   number,
-  newSchema: <T>(entries: ToSchema<T>) => vb.object({ ...entries }),
-  min: <N extends number>(n: N): vb.MinLengthAction<string, N, string> => vb.minLength(n, `${n}文字はだめです`),
-  max: <N extends number>(n: N): vb.MaxLengthAction<string, N, string> => vb.maxLength(n, `${n}文字は多すぎます`),
+  newSchema: <T extends vb.ObjectEntries>(entries: T) => vb.object({ ...entries }),
 }
