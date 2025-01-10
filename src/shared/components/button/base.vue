@@ -26,7 +26,8 @@ defineProps<Props>()
   border-radius: 8px;
   height: 48px;
 
-  & .primary {
+  &.primary {
+    color: white;
     background-color: steelblue
   }
 
