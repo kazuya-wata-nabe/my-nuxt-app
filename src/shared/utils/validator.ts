@@ -23,8 +23,8 @@ type Range<
   : Range<N, Result | C["length"], [...C, never]>
 
 type StringSetting = {
-  min: Range<200>
-  max: Range<200>
+  min: Range<201>
+  max: Range<201>
 }
 
 type ValidationRule = vb.PipeItem<string, string, vb.BaseIssue<unknown>>
