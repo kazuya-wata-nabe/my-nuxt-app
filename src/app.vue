@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const someErrorLogger = () => console.debug("error is: ")
+const someErrorLogger = (err: unknown) => console.debug("error is: ", err)
 </script>
 
 <template>
