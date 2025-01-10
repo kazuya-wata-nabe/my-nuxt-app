@@ -12,10 +12,34 @@ type ToSchema<T> = T extends Record<string, unknown> ? {
 
 type TItems<T> = vb.PipeItem<T, T, vb.BaseIssue<unknown>>[]
 
-const string = {
-  required: (...items: TItems<string>) => vb.pipe<vb.StringSchema<undefined>, TItems<string>>(vb.string(), ...items),
-  optional: () => vb.string(),
+type StringSetting = {
+  min?: number
+  max?: number
+  optional?: true
 }
+
+const string = ({ min, max, optional }: StringSetting, ...items: TItems<string>) => {
+  const rules: TItems<string> = []
+  if (!optional) {
+    rules.push(vb.nonEmpty("必須項目です"))
+  }
+
+  if (min) {
+    rules.push(vb.minLength(min, `${min}文字はだめです`))
+  }
+
+  if (max) {
+    rules.push(vb.maxLength(max, `${max}文字は多すぎます`))
+  }
+
+  return vb.pipe<vb.StringSchema<string>, TItems<string>>(
+    vb.string(""),
+    ...rules,
+    ...items,
+  )
+}
+
+const email = () => vb.pipe<vb.StringSchema<undefined>, TItems<string>>(vb.string(), vb.email())
 
 const number = {
   required: () => vb.number(),
@@ -25,7 +49,6 @@ const number = {
 export const v = {
   string,
   number,
+  email,
   newSchema: <T>(entries: ToSchema<T>) => vb.object({ ...entries }),
-  min: <N extends number>(n: N): vb.MinLengthAction<string, N, string> => vb.minLength(n, `${n}文字はだめです`),
-  max: <N extends number>(n: N): vb.MaxLengthAction<string, N, string> => vb.maxLength(n, `${n}文字は多すぎます`),
 }
