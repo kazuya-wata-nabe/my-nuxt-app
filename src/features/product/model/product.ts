@@ -9,7 +9,7 @@ export type Product = {
 export type ProductWithId = Product & { id: string }
 
 export const ProductFormSchema = v.newSchema({
-  name: v.string({ required })({ min: 2, max: 2000 }),
+  name: v.string({ required })({ min: 2, max: 50 }),
   price: v.number.required(),
   description: v.string({ optional })({ min: 1, max: 200 }),
 })
