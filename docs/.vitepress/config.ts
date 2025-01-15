@@ -28,12 +28,12 @@ export default defineConfig({
         items: [
           // This shows `/guide/index.md` page.
           { text: "Introduction", link: "/ui-wire/" },
-          { text: "ログイン", link: "/ui-wire/01-login" },
-          { text: "トップ画面", link: "/ui-wire/02-top" },
+          { text: "ログイン", link: "/ui-wire/01-login/" },
+          { text: "トップ画面", link: "/ui-wire/02-top/" },
         ],
       },
     ],
-
+    outline: "deep",
     socialLinks: [
       // { icon: "github", link: "https://github.com/vuejs/vitepress" },
     ],
