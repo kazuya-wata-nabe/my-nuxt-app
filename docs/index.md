@@ -1,38 +1,40 @@
-# ECサイトサンプル
+---
+# https://vitepress.dev/reference/default-theme-home-page
+layout: home
 
-## アクター
+hero:
+  name: "My Nuxt App"
+  text: "A VitePress Site"
+  tagline: My great project tagline
+  actions:
+    - theme: brand
+      text: サンプル
+      link: /ui-design
+    - theme: alt
+      text: 画面ワイヤー
+      link: /ui-wire
+    - theme: alt
+      text: API Examples
+      link: /api-examples
 
-- 買う人
-- 売る人
-- 運営する人
+features:
+  - title: Feature A
+    details: |
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit
 
-## 機能
+  - title: Feature B
+    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
+  - title: Feature C
+    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
+  - title: Feature C
+    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
+  - title: Feature C
+    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
+  - title: Feature C
+    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
+---
 
-- ログイン
-- 商品
-  - [ ] CRUD
-- カート
-  - RU
-- ユーザ
-  - CRUD
-- 受発注
-  - CRUD
-  - 履歴
-
-## UI
-
-- 商品
-  - カード
-  - 名前
-  - 価格
-    - 割引前
-    - 割引後
-    - 割引率
-
-- 商品一覧
-  - ソート
-  - フィルタ
-  - 商品 5 x 3
-
-- ユーザ
-  - カード
